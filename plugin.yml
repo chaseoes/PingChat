@@ -1,0 +1,4 @@
+name: ChatPing
+main: me.chaseoes.chatping.ChatPing
+version: 1.0
+description: Pings you when your name has is said in the chat.
