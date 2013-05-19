@@ -24,9 +24,13 @@ public class PingChat extends JavaPlugin implements Listener {
     
     @EventHandler(priority = EventPriority.MONITOR)
     public void onChat(AsyncPlayerChatEvent event) {
-        for (Player player : event.getRecipients()) {
+        for (final Player player : event.getRecipients()) {
             if (event.getMessage().toLowerCase().contains(player.getName().toLowerCase())) {
-                player.playSound(player.getLocation(), Sound.valueOf(getConfig().getString("sound").toUpperCase()), getConfig().getInt("volume"), getConfig().getInt("pitch"));
+            	getServer().getScheduler().runTask(this, new Runnable() {
+					public void run() {
+						player.playSound(player.getLocation(), Sound.valueOf(getConfig().getString("sound").toUpperCase()), getConfig().getInt("volume"), getConfig().getInt("pitch"));
+					}
+				});
             }
         }
     }
