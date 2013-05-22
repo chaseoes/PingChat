@@ -24,9 +24,9 @@ public class PingChat extends JavaPlugin implements Listener {
 
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void onChat(final AsyncPlayerChatEvent event) {
-		for (final String word : event.getMessage().split(" ")) {
-			getServer().getScheduler().runTask(this, new Runnable() {
-				public void run() {
+		getServer().getScheduler().runTaskLater(this, new Runnable() {
+			public void run() {
+				for (final String word : event.getMessage().split(" ")) {
 					if (getConfig().getBoolean("options.partial-names") && (getServer().getPlayer(word) != null) && (event.getRecipients().contains(getServer().getPlayer(word)))) {
 						ping(getServer().getPlayer(word));
 					} else  {
@@ -37,8 +37,8 @@ public class PingChat extends JavaPlugin implements Listener {
 						}
 					}
 				}
-			});
-		}
+			}
+		}, 5L);
 	}
 
 
