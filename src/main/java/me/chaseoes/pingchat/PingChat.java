@@ -22,16 +22,16 @@ public class PingChat extends JavaPlugin implements Listener {
 		saveConfig();
 	}
 
-	@EventHandler(priority = EventPriority.MONITOR)
+	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onChat(final AsyncPlayerChatEvent event) {
 		getServer().getScheduler().runTaskLater(this, new Runnable() {
 			public void run() {
 				for (final String word : event.getMessage().split(" ")) {
-					if (getConfig().getBoolean("options.partial-names") && (getServer().getPlayer(word) != null) && (event.getRecipients().contains(getServer().getPlayer(word)))) {
+					if (getConfig().getBoolean("options.partial-names") && (getServer().getPlayer(word) != null) && word.length() >= getConfig().getInt("options.partial-names-min-length") && (event.getRecipients().contains(getServer().getPlayer(word))) && (!getServer().getPlayer(word).getName().equalsIgnoreCase(event.getPlayer().getName()))) {
 						ping(getServer().getPlayer(word));
 					} else  {
 						for (Player player : event.getRecipients()) {
-							if (word.equalsIgnoreCase(player.getName())) {
+							if (word.contains(player.getName()) && (!player.getName().equalsIgnoreCase(event.getPlayer().getName()))) {
 								ping(player);
 							}
 						}
@@ -41,8 +41,7 @@ public class PingChat extends JavaPlugin implements Listener {
 		}, 5L);
 	}
 
-
-	public void ping( Player player) {
+	public void ping(Player player) {
 		player.playSound(player.getLocation(), Sound.valueOf(getConfig().getString("sound.sound").toUpperCase()), getConfig().getInt("sound.volume"), getConfig().getInt("sound.pitch"));
 	}
 

@@ -4,3 +4,4 @@ sound:
   pitch: 0
 options:
   partial-names: false
+  partial-names-min-length: 3
