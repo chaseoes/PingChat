@@ -8,4 +8,8 @@
 			<destName>${project.name}.jar</destName>
 		</file>
 	</files>
+<<<<<<< HEAD
 </assembly>
+=======
+</assembly>
+>>>>>>> 4bbbe3f01248ac3d694febacfe770432e902a3aa

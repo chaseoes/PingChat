@@ -1,4 +1,11 @@
+<<<<<<< HEAD
 name: ${project.name}
 main: ${project.groupId}.${upload.dbo.slug}.${project.name}
 version: ${project.version}
 description: ${project.description}
+=======
+name: PingChat
+main: me.chaseoes.pingchat.PingChat
+version: 1.2
+description: Pings you when your name has is said in the chat.
+>>>>>>> 4bbbe3f01248ac3d694febacfe770432e902a3aa
