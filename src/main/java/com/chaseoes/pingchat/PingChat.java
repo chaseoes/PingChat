@@ -1,27 +1,64 @@
 package com.chaseoes.pingchat;
 
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
-import org.bukkit.plugin.java.JavaPlugin;
+import java.io.IOException;
 
-public class PingChat extends JavaPlugin {
-    
-    private static PingChat instance;
-    
-    public static PingChat getInstance() {
-        return instance;
+import net.gravitydevelopment.updater.Updater;
+
+import org.bukkit.Sound;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.bukkit.plugin.java.JavaPlugin;
+import org.mcstats.Metrics;
+
+public class PingChat extends JavaPlugin implements Listener {
+
+    public void onEnable() {
+        getConfig().options().copyDefaults(true);
+        getConfig().options().header("PingChat by chaseoes. Go here for a list of sounds: http://jd.bukkit.org/rb/apidocs/org/bukkit/Sound.html");
+        saveConfig();
+        getServer().getPluginManager().registerEvents(this, this);
+        
+        try {
+            Metrics metrics = new Metrics(this);
+            metrics.start();
+        } catch (IOException e) {
+            // Failed to submit Metrics.
+        }
+        
+        if (getConfig().getBoolean("auto-update")) {
+            new Updater(this, 57721, this.getFile(), Updater.UpdateType.DEFAULT, false);
+        }
     }
-	
-	public void onEnable() {
-	    instance = this;
-	}
-	
-	public void onDisable() {
-		instance = null;
-	}
-	
-	public boolean onCommand(CommandSender cs, Command cmnd, String string, String[] strings) {
-		return true;
-	}
+
+    public void onDisable() {
+        reloadConfig();
+        saveConfig();
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST)
+    public void onChat(final AsyncPlayerChatEvent event) {
+        getServer().getScheduler().runTaskLater(this, new Runnable() {
+            public void run() {
+                for (final String word : event.getMessage().split(" ")) {
+                    if (getConfig().getBoolean("options.partial-names") && (getServer().getPlayer(word) != null) && word.length() >= getConfig().getInt("options.partial-names-min-length") && (event.getRecipients().contains(getServer().getPlayer(word))) && (!getServer().getPlayer(word).getName().equalsIgnoreCase(event.getPlayer().getName()))) {
+                        ping(getServer().getPlayer(word));
+                    } else {
+                        for (Player player : event.getRecipients()) {
+                            if (word.contains(player.getName()) && (!player.getName().equalsIgnoreCase(event.getPlayer().getName()))) {
+                                ping(player);
+                            }
+                        }
+                    }
+                }
+            }
+        }, 5L);
+    }
+
+    public void ping(Player player) {
+        player.playSound(player.getLocation(), Sound.valueOf(getConfig().getString("sound.sound").toUpperCase()), getConfig().getInt("sound.volume"), getConfig().getInt("sound.pitch"));
+    }
 
 }

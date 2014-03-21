@@ -1,3 +1,7 @@
+v1.3
+Added auto updating and Metrics.
+Various code refactoring.
+
 v1.1
 Made the sound, pitch, and volume configurable.
 Added configuration option to detect partial names.

@@ -1,3 +1,4 @@
+auto-update: true
 sound:
   sound: ORB_PICKUP
   volume: 60
