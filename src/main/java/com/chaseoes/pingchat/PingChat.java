@@ -17,7 +17,7 @@ public class PingChat extends JavaPlugin implements Listener {
 
     public void onEnable() {
         getConfig().options().copyDefaults(true);
-        getConfig().options().header("PingChat by chaseoes. Go here for a list of sounds: http://jd.bukkit.org/rb/apidocs/org/bukkit/Sound.html");
+        getConfig().options().header("PingChat by chaseoes. Go here for a list of sounds: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Sound.html");
         saveConfig();
         getServer().getPluginManager().registerEvents(this, this);
         

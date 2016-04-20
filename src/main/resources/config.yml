@@ -1,6 +1,6 @@
 auto-update: true
 sound:
-  sound: ORB_PICKUP
+  sound: ENTITY_EXPERIENCE_ORB_PICKUP
   volume: 60
   pitch: 0
 options:
